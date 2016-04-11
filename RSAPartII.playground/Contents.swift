@@ -190,7 +190,20 @@ class RSA: Crypto {
  ## Implementation of RSA.privateKey() and RSA.decrypt() */
     // The private key is used for decryption.
     func privateKey() -> PrivateKey {
-        return PrivateKey(decryptionExponent: 2, modulus: 3)
+        
+        let thePublicKey = self.publicKey()
+        let theModulus = thePublicKey.modulus
+        let theEncryptExp = thePublicKey.encryptionExponent
+        
+        var theDecryptionExp = 1
+        
+        repeat {
+            
+            theDecryptionExp += 1
+            
+        } while theEncryptExp*theDecryptionExp % theModulus != 1
+        
+        return PrivateKey(decryptionExponent: theDecryptionExp, modulus: theModulus)
     }
     
     // Decrypts cipherValue using the private key. Returns the plain value.
