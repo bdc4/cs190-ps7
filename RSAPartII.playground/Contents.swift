@@ -208,7 +208,13 @@ class RSA: Crypto {
     
     // Decrypts cipherValue using the private key. Returns the plain value.
     func decrypt(cipherValue: Int) -> Int {
-        return 0
+        
+        let privateKey = self.privateKey()
+        var exponentiated = 1
+        for _ in 0 ..< privateKey.decryptionExponent {
+            exponentiated *= cipherValue
+        }
+        return exponentiated % privateKey.modulus
     }
     
 }
